@@ -107,8 +107,10 @@ static void _lz4uncompress(sqlite3_context *ctx, int argc, sqlite3_value **argv)
 	const char *in = sqlite3_value_blob(argv[0]);
 
 	int out_len = read32(in);
+        if (out_len < 4) out_len = 4;
 
 	char *out = sqlite3_malloc(out_len);
+
 	int nread = LZ4_uncompress(4 + in, out, out_len);
 	if (nread < 0 || nread != in_len-4) {
 		// error
