@@ -38,8 +38,8 @@ static void _lz4compress(sqlite3_context *ctx, int argc, sqlite3_value **argv) {
 		return;
 	}
 
-        if (SQLITE_NULL == sqlite3_value_type(argv[0])) {
-                sqlite3_result_null(ctx);
+        if (SQLITE_BLOB != sqlite3_value_type(argv[0])) {
+                sqlite3_result_value(ctx, argv[0]);
                 return;
         }
 
@@ -66,11 +66,10 @@ static void _lz4compresshc(sqlite3_context *ctx, int argc, sqlite3_value **argv)
 		return;
 	}
 
-        if (SQLITE_NULL == sqlite3_value_type(argv[0])) {
-                sqlite3_result_null(ctx);
+        if (SQLITE_BLOB != sqlite3_value_type(argv[0])) {
+                sqlite3_result_value(ctx, argv[0]);
                 return;
         }
-
 
 	int in_len = sqlite3_value_bytes(argv[0]);
 	const char *in = sqlite3_value_blob(argv[0]);
@@ -94,8 +93,8 @@ static void _lz4uncompress(sqlite3_context *ctx, int argc, sqlite3_value **argv)
 		return;
 	}
 
-        if (SQLITE_NULL == sqlite3_value_type(argv[0])) {
-                sqlite3_result_null(ctx);
+        if (SQLITE_BLOB != sqlite3_value_type(argv[0])) {
+                sqlite3_result_value(ctx, argv[0]);
                 return;
         }
 
