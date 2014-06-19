@@ -49,7 +49,7 @@ static void _lz4compress(sqlite3_context *ctx, int argc, sqlite3_value **argv) {
 	int out_buf_len = LZ4_compressBound(in_len);
 	char *out = sqlite3_malloc(4 + out_buf_len);
 	int out_len = LZ4_compress(in, 4 + out, in_len);
-	if (out_len < 0) {
+	if (out_len <= 0) {
 		// error
 		sqlite3_free(out);
 		return;
@@ -67,17 +67,19 @@ static void _lz4compresshc(sqlite3_context *ctx, int argc, sqlite3_value **argv)
 	}
 
         if (SQLITE3_TEXT != sqlite3_value_type(argv[0])) {
+
                 sqlite3_result_value(ctx, argv[0]);
                 return;
         }
 
 	int in_len = sqlite3_value_bytes(argv[0]);
+
 	const char *in = sqlite3_value_text(argv[0]);
 
 	int out_buf_len = LZ4_compressBound(in_len);
 	char *out = sqlite3_malloc(4 + out_buf_len);
 	int out_len = LZ4_compressHC(in, 4 + out, in_len);
-	if (out_len < 0) {
+	if (out_len <= 0) {
 		// error
 		sqlite3_free(out);
 		return;
